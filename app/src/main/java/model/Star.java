@@ -32,21 +32,23 @@ public class Star extends CelestialBody {
       this.radius = radius;
     }
 
-    protected Star toStar() {
-      return this;
-    }
+
 
     public void remove() {
       universe.removeStar(this);
     }
 
-    public void addChild(Planet child) {
-      // TODO: Validate child
+    public void addChild(Planet child, UniverseRules rules) {
+      rules.validate(child, this);
       children.add(new Planet.Mutable(child, this));
     }
 
-    public void removeChild(Planet.Mutable child) {
+    protected void removeChild(Planet.Mutable child) {
       children.remove(child);
+    }    
+    
+    protected Star toStar() {
+      return this;
     }
   }
 

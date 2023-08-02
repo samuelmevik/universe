@@ -52,12 +52,12 @@ public class Planet extends CelestialBody {
       parent.removeChild(this);
     }
 
-    public void addChild(Moon child) {
-      // TODO Validate child
+    public void addChild(Moon child, UniverseRules rules) {
+      rules.validate(child, this);
       children.add(new Moon.Mutable(child));
     }
 
-    public void removeChild(Moon.Mutable child) {
+    protected void removeChild(Moon.Mutable child) {
       children.remove(child);
     }    
     

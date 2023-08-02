@@ -8,18 +8,24 @@ import java.util.List;
  */
 public final class Universe {
   private List<Star.Mutable> stars = new ArrayList<>();
+  private UniverseRules rules;
   /**
    * Creates a new universe.
    */
-  public Universe() {
+  public Universe(UniverseRules rules) {
+    this.rules = rules;
   }
 
-  public void addStar(Star star) {
-    // TODO: Validate star
+  public void addStar(Star star, UniverseRules rules) {
+    rules.validate(star, this);
     stars.add(new Star.Mutable(star, this));
   }
 
-  public void removeStar(Star.Mutable star) {
+  protected void removeStar(Star.Mutable star) {
     stars.remove(star);
+  }
+
+  public UniverseRules getRules() {
+    return rules;
   }
 }
