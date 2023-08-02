@@ -2,7 +2,6 @@ package model.celestials;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import model.celestials.policies.ChildPolicy;
 
 /**
