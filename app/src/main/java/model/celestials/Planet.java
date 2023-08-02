@@ -2,7 +2,6 @@ package model.celestials;
 
 import java.util.ArrayList;
 import java.util.List;
-import model.celestials.policies.ChildPolicy;
 
 /**
  * A planet is a type of celestial body that may have moons orbiting it.
@@ -28,11 +27,13 @@ public class Planet extends CelestialBody {
   /**
    * A mutable version of the Planet class.
    */
-  public static final class Mutable extends Planet implements ChildPolicy<Moon> {
+  public static final class Mutable extends Planet {
+    private Star.Mutable parent;
     private final List<Moon.Mutable> children = new ArrayList<>();
 
-    public Mutable(Planet planet) {
+    public Mutable(Planet planet, Star.Mutable parent) {
       super(planet.getName(), planet.getRadius(), planet.getOrbitRadius());
+      this.parent = parent;
     }
 
     protected void setName(String name) {
@@ -47,19 +48,21 @@ public class Planet extends CelestialBody {
       this.orbitRadius = orbitRadius;
     }
 
-    protected Planet toPlanet() {
-      return this;
+    public void remove() {
+      parent.removeChild(this);
     }
 
-    @Override
     public void addChild(Moon child) {
       // TODO Validate child
       children.add(new Moon.Mutable(child));
     }
 
-    @Override
-    public void removeChild(Moon child) {
+    public void removeChild(Moon.Mutable child) {
       children.remove(child);
+    }    
+    
+    protected Planet toPlanet() {
+      return this;
     }
   }
 
