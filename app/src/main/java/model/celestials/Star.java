@@ -1,5 +1,10 @@
 package model.celestials;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import model.celestials.policies.ChildPolicy;
+
 /**
  * A star is a type of celestial body that may have planet orbiting it.
  */
@@ -12,7 +17,8 @@ public class Star extends CelestialBody {
   /**
    * A mutable version of the Star class.
    */
-  public static final class Mutable extends Star {
+  public static final class Mutable extends Star implements ChildPolicy<Planet> {
+    private final List<Planet.Mutable> children = new ArrayList<>();
 
     public Mutable(Star star) {
       super(star.getName(), star.getRadius());
@@ -28,6 +34,17 @@ public class Star extends CelestialBody {
 
     protected Star toStar() {
       return this;
+    }
+
+    @Override
+    public void addChild(Planet child) {
+      // TODO: Validate child
+      children.add(new Planet.Mutable(child));
+    }
+
+    @Override
+    public void removeChild(Planet child) {
+      children.remove(child);
     }
   }
 
