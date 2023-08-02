@@ -15,7 +15,7 @@ public class Star extends CelestialBody {
   /**
    * A mutable version of the Star class.
    */
-  public static final class Mutable extends Star {
+  public static final class Mutable extends Star implements Orbital<Planet> {
     private Universe universe;
     private final List<Planet.Mutable> children = new ArrayList<>();
 
@@ -38,10 +38,6 @@ public class Star extends CelestialBody {
       universe.removeStar(this);
     }
 
-    public void addChild(Planet child, UniverseRules rules) {
-      rules.validate(child, this);
-      children.add(new Planet.Mutable(child, this));
-    }
 
     protected void removeChild(Planet.Mutable child) {
       children.remove(child);
@@ -49,6 +45,17 @@ public class Star extends CelestialBody {
     
     protected Star toStar() {
       return this;
+    }
+
+    @Override
+    public void addChild(Planet child, UniverseRules rules) {
+      rules.validate(child, this);
+      children.add(new Planet.Mutable(child, this));
+    }
+
+    @Override
+    public Planet[] getChildren() {
+      return children.toArray(new Planet[children.size()]);
     }
   }
 

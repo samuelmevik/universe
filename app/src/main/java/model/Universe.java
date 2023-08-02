@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * The universe is a collection of stars and their children.
  */
-public final class Universe {
+public final class Universe implements Orbital<Star> {
   private List<Star.Mutable> stars = new ArrayList<>();
   private UniverseRules rules;
   /**
@@ -16,16 +16,22 @@ public final class Universe {
     this.rules = rules;
   }
 
-  public void addStar(Star star, UniverseRules rules) {
-    rules.validate(star, this);
-    stars.add(new Star.Mutable(star, this));
-  }
-
   protected void removeStar(Star.Mutable star) {
     stars.remove(star);
   }
 
   public UniverseRules getRules() {
     return rules;
+  }
+
+  @Override
+  public void addChild(Star star, UniverseRules rules) {
+    rules.validate(star, this);
+    stars.add(new Star.Mutable(star, this));
+  }
+
+  @Override
+  public Star[] getChildren() {
+    return stars.toArray(new Star[stars.size()]);
   }
 }

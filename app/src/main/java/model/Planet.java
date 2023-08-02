@@ -27,7 +27,7 @@ public class Planet extends CelestialBody {
   /**
    * A mutable version of the Planet class.
    */
-  public static final class Mutable extends Planet {
+  public static final class Mutable extends Planet implements Orbital<Moon> {
     private Star.Mutable parent;
     private final List<Moon.Mutable> children = new ArrayList<>();
 
@@ -52,17 +52,23 @@ public class Planet extends CelestialBody {
       parent.removeChild(this);
     }
 
+    protected void removeChild(Moon.Mutable child) {
+      children.remove(child);
+    }
+
+    protected Planet toPlanet() {
+      return this;
+    }
+
+    @Override
     public void addChild(Moon child, UniverseRules rules) {
       rules.validate(child, this);
       children.add(new Moon.Mutable(child));
     }
 
-    protected void removeChild(Moon.Mutable child) {
-      children.remove(child);
-    }    
-    
-    protected Planet toPlanet() {
-      return this;
+    @Override
+    public Moon[] getChildren() {
+      return children.toArray(new Moon[children.size()]);
     }
   }
 
