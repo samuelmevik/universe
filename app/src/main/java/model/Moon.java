@@ -1,4 +1,4 @@
-package model.celestials;
+package model;
 
 /**
  * A moon is a type of celestial body that doesn't have children.

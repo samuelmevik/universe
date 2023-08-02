@@ -1,9 +1,7 @@
-package model.celestials;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import model.Universe;
 
 /**
  * A star is a type of celestial body that may have planet orbiting it.

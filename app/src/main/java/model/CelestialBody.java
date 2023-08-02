@@ -1,4 +1,4 @@
-package model.celestials;
+package model;
 
 /**
  * A celestial body represents a body residing in space.

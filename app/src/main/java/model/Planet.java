@@ -1,4 +1,4 @@
-package model.celestials;
+package model;
 
 import java.util.ArrayList;
 import java.util.List;
