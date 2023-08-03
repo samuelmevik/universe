@@ -7,13 +7,14 @@ import model.Moon;
 import model.Orbits;
 import model.Planet;
 import model.Star;
+import model.observer.CelestialObserver;
 import view.events.MainEvent;
 import view.events.MoonEvent;
 import view.events.PlanetEvent;
 import view.events.StarEvent;
 import view.sorting.Sort;
 
-public class View {
+public class View implements CelestialObserver {
   private final Scanner sc;
 
   private final String add = "add";
@@ -182,6 +183,11 @@ public class View {
       case back -> MoonEvent.BACK;
       default -> throw new IllegalArgumentException("Unexpected value: " + choice);
     };
+  }
+
+  @Override
+  public void update(String method, CelestialBody body) {
+    System.out.println(method + " " + body.getName());
   }
 
 }
