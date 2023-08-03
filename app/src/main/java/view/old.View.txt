@@ -1,0 +1,274 @@
+package view;
+
+import java.util.Scanner;
+import model.CelestialBody;
+import model.Moon;
+import model.Orbits;
+import model.Planet;
+import model.Star;
+import model.observer.CelestialObserver;
+import view.events.MainEvent;
+import view.events.MoonEvent;
+import view.events.PlanetEvent;
+import view.events.StarEvent;
+import view.sorting.Sort;
+
+/**
+ * A view class that handles the user interface.
+ */
+public class View implements CelestialObserver {
+  private final Scanner sc;
+
+  private final String add = "add";
+  private final String back = "b";
+  private final String list = "lm";
+  private final String select = "sel";
+  private final String sort = "s";
+  private final String quit = "q";
+
+  private Sort[] sortingStrategies;
+  private Sort currentSortingStrategy;
+
+  /**
+   * Creates a new view.
+   */
+  public View(Scanner sc, Sort[] sortingStrategies) {
+    this.sc = sc;
+    this.sortingStrategies = sortingStrategies;
+    this.currentSortingStrategy = sortingStrategies[0];
+  }
+
+  /**
+   * Displays all celestial bodies in an array.
+   *
+   * @param celestialObjects the array of celestial bodies to be displayed
+   */
+  public void list(CelestialBody[] celestialObjects) {
+    if (celestialObjects.length == 0) {
+      System.out.println("No celestial objects found");
+      return;
+    }
+    CelestialBody[] sortedObjects = currentSortingStrategy.sort(celestialObjects);
+    for (int i = 0; i < sortedObjects.length; i++) {
+      System.out.print((i + 1) + ". ");
+      show(sortedObjects[i]);
+    }
+  }
+
+  /**
+   * Displays a celestial body.
+   *
+   * @param celestial the celestial body to be displayed
+   */
+  public void show(CelestialBody celestial) {
+    String orbitRadius = celestial instanceof Orbits ? " Orbit: " + ((Orbits) celestial).getOrbitRadius() : "";
+    System.out
+        .println(celestial.getType() + ": " + celestial.getName() + " Radius: " + celestial.getRadius() + orbitRadius);
+  }
+
+  /**
+   * Picks a celestial body from an array of celestial bodies based on the active
+   * sorting strategy.
+   *
+   * @param <T>             the type of celestial bodies in the array
+   * @param celestialBodies the array of celestial bodies
+   * @return the picked celestial body
+   */
+  public <T extends CelestialBody> T pickCelestialBody(T[] celestialBodies) {
+    if (celestialBodies.length == 0) {
+      System.out.println("No celestial bodies found");
+      return null;
+    }
+    T[] sortedObjects = currentSortingStrategy.sort(celestialBodies);
+    System.out.println("Select a celestial body: ");
+    return sortedObjects[Integer.parseInt(sc.nextLine()) - 1];
+  }
+
+  /**
+   * Creates a new un-mutable star.
+   *
+   * @return the new star
+   */
+  public Star getStar() {
+    return new Star(askForName(), askForRadius());
+  }
+
+  /**
+   * Creates a new un-mutable planet.
+   *
+   * @return the new planet
+   */
+  public Planet getPlanet() {
+    return new Planet(askForName(), askForRadius(), askForOrbitRadius());
+  }
+
+  /**
+   * Creates a new un-mutable moon.
+   *
+   * @return the new moon
+   */
+  public Moon getMoon() {
+    return new Moon(askForName(), askForRadius(), askForOrbitRadius());
+  }
+
+  /**
+   * Asks the user for the name of a celestial body.
+   *
+   * @return the name
+   */
+  private String askForName() {
+    System.out.println("Name: ");
+    return sc.nextLine();
+  }
+
+  /**
+   * Asks the user for the radius of a celestial body.
+   *
+   * @return the radius
+   */
+  private double askForRadius() {
+    System.out.println("Radius: ");
+    return Double.parseDouble(sc.nextLine());
+  }
+
+  /**
+   * Asks the user for the orbit radius of a celestial body.
+   *
+   * @return the orbit radius
+   */
+  private double askForOrbitRadius() {
+    System.out.println("Orbit radius: ");
+    return Double.parseDouble(sc.nextLine());
+  }
+
+  /**
+   * Sets the current sorting strategy.
+   */
+  public void pickSortingStrategy() {
+    System.out.println("Choose a sorting strategy:");
+    for (int i = 0; i < sortingStrategies.length; i++) {
+      System.out.println((i + 1) + " " + sortingStrategies[i].getName());
+    }
+    currentSortingStrategy = sortingStrategies[Integer.parseInt(sc.nextLine()) - 1];
+  }
+
+  /**
+   * Shows an error message.
+   *
+   * @param message the error message to show
+   */
+  public void showError(String message) {
+    System.out.println("Error: " + message);
+  }
+
+  /**
+   * Shows the main menu.
+   *
+   * @return the event that the user selected
+   */
+  public MainEvent showMainMenu() {
+    System.out.println("******************************************************");
+    System.out.println("Main Menu");
+    System.out.println("******************************************************");
+    System.out.println(" " + list + " - List stars");
+    System.out.println(" " + add + " - Add a star");
+    System.out.println(" " + select + " - Select a star");
+    System.out.println(" " + sort + " - Set sorting strategy");
+    System.out.println(" " + quit + " - Quit the application");
+
+    String choice = sc.nextLine().toLowerCase();
+
+    return switch (choice) {
+      case add -> MainEvent.ADD;
+      case list -> MainEvent.LIST;
+      case select -> MainEvent.SELECT;
+      case sort -> MainEvent.SORT;
+      case quit -> MainEvent.QUIT;
+      default -> throw new IllegalArgumentException("Unexpected value: " + choice);
+    };
+  }
+
+  /**
+   * Shows the star menu.
+   *
+   * @param star the star to show the menu for
+   * @return the event that the user selected
+   */
+  public StarEvent showStarMenu(Star star) {
+    System.out.println("******************************************************");
+    System.out.println("Star Menu");
+    System.out.println("******************************************************");
+    show(star);
+    System.out.println(" " + add + " - Add a Planet");
+    System.out.println(" " + list + " - List planets");
+    System.out.println(" " + select + " - Select a child");
+    System.out.println(" " + sort + " - Set sorting strategy");
+    System.out.println(" " + back + " - Back");
+    String choice = sc.nextLine().toLowerCase();
+
+    return switch (choice) {
+      case add -> StarEvent.ADD;
+      case list -> StarEvent.LIST;
+      case select -> StarEvent.SELECT;
+      case sort -> StarEvent.SORT;
+      case back -> StarEvent.BACK;
+      default -> throw new IllegalArgumentException("Unexpected value: " + choice);
+    };
+  }
+
+  /**
+   * Shows the planet menu.
+   *
+   * @param planet the planet to show the menu for
+   * @return the event that the user selected
+   */
+  public PlanetEvent showPlanetMenu(Planet planet) {
+    System.out.println("******************************************************");
+    System.out.println("Planet Menu");
+    System.out.println("******************************************************");
+    show(planet);
+    System.out.println(" " + add + " - Add a Moon");
+    System.out.println(" " + list + " - List moons");
+    System.out.println(" " + select + " - Select a child");
+    System.out.println(" " + sort + " - Set sorting strategy");
+    System.out.println(" " + back + " - Back");
+
+    String choice = sc.nextLine().toLowerCase();
+
+    return switch (choice) {
+      case add -> PlanetEvent.ADD;
+      case list -> PlanetEvent.LIST;
+      case select -> PlanetEvent.SELECT;
+      case sort -> PlanetEvent.SORT;
+      case back -> PlanetEvent.BACK;
+      default -> throw new IllegalArgumentException("Unexpected value: " + choice);
+    };
+  }
+
+  /**
+   * Shows the moon menu.
+   *
+   * @param moon the moon to show the menu for
+   * @return the event that the user selected
+   */
+  public MoonEvent showMoonMenu(Moon moon) {
+    System.out.println("******************************************************");
+    System.out.println("Moon Menu");
+    System.out.println("******************************************************");
+    show(moon);
+    System.out.println(" " + back + " - Back");
+
+    String choice = sc.nextLine().toLowerCase();
+
+    return switch (choice) {
+      case back -> MoonEvent.BACK;
+      default -> throw new IllegalArgumentException("Unexpected value: " + choice);
+    };
+  }
+
+  @Override
+  public void update(String method, CelestialBody body) {
+    System.out.println(method + " " + body.getName());
+  }
+
+}

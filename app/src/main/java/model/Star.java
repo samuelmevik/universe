@@ -21,11 +21,9 @@ public class Star extends CelestialBody {
    * A mutable version of the Star class.
    */
   public static final class Mutable extends Star implements Orbital<Planet> {
-    private Universe universe;
 
     public Mutable(Star star, Universe universe) {
       super(star.getName(), star.getRadius());
-      this.universe = universe;
     }
 
     protected void setName(String name) {
@@ -34,10 +32,6 @@ public class Star extends CelestialBody {
 
     protected void setRadius(double radius) {
       this.radius = radius;
-    }
-
-    public void remove() {
-      universe.removeStar(this);
     }
 
     protected void removeChild(Planet.Mutable child) {
@@ -51,7 +45,7 @@ public class Star extends CelestialBody {
     @Override
     public void addChild(Planet child, CelestialRules rules) {
       rules.onCreation(child, this);
-      children.add(new Planet.Mutable(child, this));
+      children.add(new Planet.Mutable(child));
     }
 
     @Override

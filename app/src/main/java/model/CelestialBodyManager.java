@@ -2,9 +2,11 @@ package model;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import model.observer.CelestialObserver;
 
+/**
+ * A class that manages the rules for creating celestial bodies.
+ */
 public class CelestialBodyManager implements CelestialRules {
 
   private Set<CelestialObserver> observers = new HashSet<>();

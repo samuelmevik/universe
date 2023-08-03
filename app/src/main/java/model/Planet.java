@@ -34,11 +34,9 @@ public class Planet extends CelestialBody implements Orbits {
    * A mutable version of the Planet class.
    */
   public static final class Mutable extends Planet implements Orbital<Moon> {
-    private Star.Mutable parent;
 
-    public Mutable(Planet planet, Star.Mutable parent) {
+    public Mutable(Planet planet) {
       super(planet.getName(), planet.getRadius(), planet.getOrbitRadius());
-      this.parent = parent;
     }
 
     protected void setName(String name) {
@@ -51,10 +49,6 @@ public class Planet extends CelestialBody implements Orbits {
 
     protected void setOrbitRadius(double orbitRadius) {
       this.orbitRadius = orbitRadius;
-    }
-
-    public void remove() {
-      parent.removeChild(this);
     }
 
     protected void removeChild(Moon.Mutable child) {

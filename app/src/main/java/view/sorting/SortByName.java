@@ -2,6 +2,10 @@ package view.sorting;
 
 import model.CelestialBody;
 
+/**
+ * A sorting strategy that sorts an array of CelestialBody objects based on
+ * their name.
+ */
 public class SortByName extends Sort {
   public SortByName() {
     super("Name");

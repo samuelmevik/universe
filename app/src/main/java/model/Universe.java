@@ -9,6 +9,7 @@ import java.util.List;
 public final class Universe implements Orbital<Star> {
   private List<Star.Mutable> stars = new ArrayList<>();
   private CelestialRules rules;
+  
   /**
    * Creates a new universe.
    */

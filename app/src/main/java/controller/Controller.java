@@ -17,7 +17,7 @@ public class Controller {
 
   /**
    * Creates a new controller.
-   * 
+   *
    * @param universe the universe
    * @param view     the view
    */
@@ -35,6 +35,9 @@ public class Controller {
     orbital.addChild(child, universe.getRules());
   }
 
+  /**
+   * Shows the main menu and starts the application.
+   */
   public void showMainMenu() {
     boolean exit = false;
     while (!exit) {

@@ -2,9 +2,12 @@ package view.sorting;
 
 import java.util.Arrays;
 import java.util.Comparator;
-
 import model.CelestialBody;
 
+/**
+ * A sorting strategy that sorts an array of CelestialBody objects based on
+ * their radius.
+ */
 public class SortByRadius extends Sort {
   public SortByRadius() {
     super("Size");

@@ -2,6 +2,9 @@ package view.sorting;
 
 import model.CelestialBody;
 
+/**
+ * Abstract class for sorting strategies.
+ */
 public abstract class Sort {
   private final String name;
 
