@@ -38,7 +38,7 @@ public class CelestialBodyManager implements CelestialRules {
   }
 
   @Override
-  public void onCreation(Planet planet, Star.Mutable star) {
+  public void onCreation(Planet planet, Star star) {
     defaults(planet);
     uniqueName(star, star.getChildren());
     if (planet.getRadius() < 1000) {
@@ -56,8 +56,9 @@ public class CelestialBodyManager implements CelestialRules {
   }
 
   @Override
-  public void onCreation(Moon moon, Planet.Mutable planet) {
+  public void onCreation(Moon moon, Planet planet) {
     defaults(moon);
+    uniqueName(moon, planet.getChildren());
     if (moon.getRadius() < 10) {
       throw new IllegalArgumentException("Moon radius must be larger than 10km.");
     }

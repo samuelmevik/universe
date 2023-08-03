@@ -7,6 +7,7 @@ import java.util.List;
  * A planet is a type of celestial body that may have moons orbiting it.
  */
 public class Planet extends CelestialBody implements Orbits {
+  protected final List<Moon.Mutable> children = new ArrayList<>();
   protected double orbitRadius;
 
   /**
@@ -25,12 +26,15 @@ public class Planet extends CelestialBody implements Orbits {
     return orbitRadius;
   }
 
+  public Moon[] getChildren() {
+    return children.toArray(new Moon[children.size()]);
+  }
+
   /**
    * A mutable version of the Planet class.
    */
   public static final class Mutable extends Planet implements Orbital<Moon> {
     private Star.Mutable parent;
-    private final List<Moon.Mutable> children = new ArrayList<>();
 
     public Mutable(Planet planet, Star.Mutable parent) {
       super(planet.getName(), planet.getRadius(), planet.getOrbitRadius());
