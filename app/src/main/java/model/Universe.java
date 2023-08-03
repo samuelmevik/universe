@@ -31,7 +31,7 @@ public final class Universe implements Orbital<Star> {
   }
 
   @Override
-  public Star[] getChildren() {
-    return stars.toArray(new Star[stars.size()]);
+  public Star.Mutable[] getChildren() {
+    return stars.toArray(new Star.Mutable[stars.size()]);
   }
 }
