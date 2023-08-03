@@ -7,9 +7,8 @@ import java.util.List;
  * A star is a type of celestial body that may have planet orbiting it.
  */
 public class Star extends CelestialBody {
-
   public Star(String name, double radius) {
-    super(name, radius);
+    super("Star", name, radius);
   }
 
   /**
@@ -32,17 +31,14 @@ public class Star extends CelestialBody {
       this.radius = radius;
     }
 
-
-
     public void remove() {
       universe.removeStar(this);
     }
 
-
     protected void removeChild(Planet.Mutable child) {
       children.remove(child);
-    }    
-    
+    }
+
     protected Star toStar() {
       return this;
     }
@@ -54,8 +50,8 @@ public class Star extends CelestialBody {
     }
 
     @Override
-    public Planet[] getChildren() {
-      return children.toArray(new Planet[children.size()]);
+    public Planet.Mutable[] getChildren() {
+      return children.toArray(new Planet.Mutable[children.size()]);
     }
   }
 

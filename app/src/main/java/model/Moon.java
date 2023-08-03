@@ -3,14 +3,15 @@ package model;
 /**
  * A moon is a type of celestial body that doesn't have children.
  */
-public class Moon extends CelestialBody {
+public class Moon extends CelestialBody implements Orbits {
   protected double orbitRadius;
 
   public Moon(String name, double radius, double orbitRadius) {
-    super(name, radius);
+    super("Moon", name, radius);
     this.orbitRadius = orbitRadius;
   }
 
+  @Override
   public double getOrbitRadius() {
     return orbitRadius;
   }
@@ -40,4 +41,5 @@ public class Moon extends CelestialBody {
       return this;
     }
   }
+
 }

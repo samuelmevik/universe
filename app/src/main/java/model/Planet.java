@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * A planet is a type of celestial body that may have moons orbiting it.
  */
-public class Planet extends CelestialBody {
+public class Planet extends CelestialBody implements Orbits {
   protected double orbitRadius;
 
   /**
@@ -16,10 +16,11 @@ public class Planet extends CelestialBody {
    * @param radius The radius of the planet.
    */
   public Planet(String name, double radius, double orbitRadius) {
-    super(name, radius);
+    super("Planet", name, radius);
     this.orbitRadius = orbitRadius;
   }
 
+  @Override
   public double getOrbitRadius() {
     return orbitRadius;
   }
@@ -67,8 +68,8 @@ public class Planet extends CelestialBody {
     }
 
     @Override
-    public Moon[] getChildren() {
-      return children.toArray(new Moon[children.size()]);
+    public Moon.Mutable[] getChildren() {
+      return children.toArray(new Moon.Mutable[children.size()]);
     }
   }
 
