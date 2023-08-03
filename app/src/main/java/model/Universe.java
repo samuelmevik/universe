@@ -8,11 +8,11 @@ import java.util.List;
  */
 public final class Universe implements Orbital<Star> {
   private List<Star.Mutable> stars = new ArrayList<>();
-  private UniverseRules rules;
+  private CelestialRules rules;
   /**
    * Creates a new universe.
    */
-  public Universe(UniverseRules rules) {
+  public Universe(CelestialRules rules) {
     this.rules = rules;
   }
 
@@ -20,12 +20,12 @@ public final class Universe implements Orbital<Star> {
     stars.remove(star);
   }
 
-  public UniverseRules getRules() {
+  public CelestialRules getRules() {
     return rules;
   }
 
   @Override
-  public void addChild(Star star, UniverseRules rules) {
+  public void addChild(Star star, CelestialRules rules) {
     rules.onCreation(star, this);
     stars.add(new Star.Mutable(star, this));
   }

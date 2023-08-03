@@ -62,7 +62,7 @@ public class Planet extends CelestialBody implements Orbits {
     }
 
     @Override
-    public void addChild(Moon child, UniverseRules rules) {
+    public void addChild(Moon child, CelestialRules rules) {
       rules.onCreation(child, this);
       children.add(new Moon.Mutable(child));
     }

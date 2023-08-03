@@ -5,7 +5,7 @@ import java.util.Set;
 
 import model.observer.CelestialObserver;
 
-public class DefaultUniverseRules implements UniverseRules {
+public class CelestialBodyManager implements CelestialRules {
 
   private Set<CelestialObserver> observers = new HashSet<>();
 
