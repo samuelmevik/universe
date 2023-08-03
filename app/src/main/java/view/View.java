@@ -20,7 +20,7 @@ public class View implements CelestialObserver {
   private final String add = "add";
   private final String back = "b";
   private final String list = "lm";
-  private final String select = "select";
+  private final String select = "sel";
   private final String sort = "s";
   private final String quit = "q";
 
@@ -109,7 +109,7 @@ public class View implements CelestialObserver {
     System.out.println("******************************************************");
     System.out.println(" " + list + " - List stars");
     System.out.println(" " + add + " - Add a star");
-    System.out.println(" " + select + " - Select");
+    System.out.println(" " + select + " - Select a star");
     System.out.println(" " + sort + " - Set sorting strategy");
     System.out.println(" " + quit + " - Quit the application");
 
@@ -132,7 +132,7 @@ public class View implements CelestialObserver {
     show(star);
     System.out.println(" " + add + " - Add a Planet");
     System.out.println(" " + list + " - List planets");
-    System.out.println(" " + select + " - Select");
+    System.out.println(" " + select + " - Select a child");
     System.out.println(" " + sort + " - Set sorting strategy");
     System.out.println(" " + back + " - Back");
     String choice = sc.nextLine().toLowerCase();
@@ -154,7 +154,7 @@ public class View implements CelestialObserver {
     show(planet);
     System.out.println(" " + add + " - Add a Moon");
     System.out.println(" " + list + " - List moons");
-    System.out.println(" " + select + " - Select");
+    System.out.println(" " + select + " - Select a child");
     System.out.println(" " + sort + " - Set sorting strategy");
     System.out.println(" " + back + " - Back");
 
