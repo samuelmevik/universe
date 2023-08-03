@@ -45,7 +45,7 @@ public class Star extends CelestialBody {
 
     @Override
     public void addChild(Planet child, UniverseRules rules) {
-      rules.validate(child, this);
+      rules.onCreation(child, this);
       children.add(new Planet.Mutable(child, this));
     }
 
