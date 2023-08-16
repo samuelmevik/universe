@@ -57,11 +57,13 @@ public class CelestialBodyManager implements CelestialRules {
     }
 
     if (planet.getRadius() > star.getRadius() / PLANET_RADIUS_FACTOR) {
-      throw new IllegalArgumentException("Planet radius must be smaller than " + PLANET_RADIUS_FACTOR + "x the star radius.");
+      throw new IllegalArgumentException(
+          "Planet radius must be smaller than " + PLANET_RADIUS_FACTOR + "x the star radius.");
     }
 
     if (planet.getOrbitRadius() < star.getRadius() * PLANET_ORBIT_RADIUS_FACTOR) {
-      throw new IllegalArgumentException("Planet orbit radius must be larger than " + PLANET_ORBIT_RADIUS_FACTOR + "x the star radius.");
+      throw new IllegalArgumentException(
+          "Planet orbit radius must be larger than " + PLANET_ORBIT_RADIUS_FACTOR + "x the star radius.");
     }
     notifyObservers("Created", planet);
   }
@@ -71,15 +73,17 @@ public class CelestialBodyManager implements CelestialRules {
     defaults(moon);
     uniqueName(moon, planet.getChildren());
     if (moon.getRadius() < MOON_MIN_RADIUS) {
-      throw new IllegalArgumentException("Moon radius must be larger than 10km.");
+      throw new IllegalArgumentException("Moon radius must be larger than " + MOON_MIN_RADIUS + "km.");
     }
 
     if (moon.getRadius() > planet.getRadius() / MOON_RADIUS_FACTOR) {
-      throw new IllegalArgumentException("Moon radius must be smaller than 17x the planet radius.");
+      throw new IllegalArgumentException(
+          "Moon radius must be smaller than " + MOON_RADIUS_FACTOR + "x the planet radius.");
     }
 
     if (moon.getOrbitRadius() < planet.getRadius() * MOON_ORBIT_RADIUS_FACTOR) {
-      throw new IllegalArgumentException("Moon orbit radius must be larger than 5x the planet radius.");
+      throw new IllegalArgumentException(
+          "Moon orbit radius must be larger than " + MOON_RADIUS_FACTOR + "x the planet radius.");
     }
     notifyObservers("Created", moon);
   }
