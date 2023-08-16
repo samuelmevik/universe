@@ -10,6 +10,15 @@ import model.observer.CelestialObserver;
 public class CelestialBodyManager implements CelestialRules {
 
   private Set<CelestialObserver> observers = new HashSet<>();
+  private static final int STAR_MIN_RADIUS = 20000;
+
+  private static final int PLANET_MIN_RADIUS = 1000;
+  private static final int PLANET_RADIUS_FACTOR = 10;
+  private static final int PLANET_ORBIT_RADIUS_FACTOR = 10;
+
+  private static final int MOON_MIN_RADIUS = 10;
+  private static final int MOON_RADIUS_FACTOR = 17;
+  private static final int MOON_ORBIT_RADIUS_FACTOR = 5;
 
   private void uniqueName(CelestialBody body, CelestialBody[] children) {
     for (CelestialBody child : children) {
@@ -33,8 +42,8 @@ public class CelestialBodyManager implements CelestialRules {
   public void onCreation(Star star, Universe universe) {
     defaults(star);
     uniqueName(star, universe.getChildren());
-    if (star.getRadius() < 20000) {
-      throw new IllegalArgumentException("Star radius must be larger than 20000km.");
+    if (star.getRadius() < STAR_MIN_RADIUS) {
+      throw new IllegalArgumentException("Star radius must be larger than " + STAR_MIN_RADIUS + "km.");
     }
     notifyObservers("Created", star);
   }
@@ -43,16 +52,16 @@ public class CelestialBodyManager implements CelestialRules {
   public void onCreation(Planet planet, Star star) {
     defaults(planet);
     uniqueName(star, star.getChildren());
-    if (planet.getRadius() < 1000) {
-      throw new IllegalArgumentException("Planet radius must be larger than 1000km.");
+    if (planet.getRadius() < PLANET_MIN_RADIUS) {
+      throw new IllegalArgumentException("Planet radius must be larger than " + PLANET_MIN_RADIUS + "km.");
     }
 
-    if (planet.getRadius() > star.getRadius() / 10) {
-      throw new IllegalArgumentException("Planet radius must be smaller than 10x the star radius.");
+    if (planet.getRadius() > star.getRadius() / PLANET_RADIUS_FACTOR) {
+      throw new IllegalArgumentException("Planet radius must be smaller than " + PLANET_RADIUS_FACTOR + "x the star radius.");
     }
 
-    if (planet.getOrbitRadius() < star.getRadius() * 10) {
-      throw new IllegalArgumentException("Planet orbit radius must be larger than 10x the star radius.");
+    if (planet.getOrbitRadius() < star.getRadius() * PLANET_ORBIT_RADIUS_FACTOR) {
+      throw new IllegalArgumentException("Planet orbit radius must be larger than " + PLANET_ORBIT_RADIUS_FACTOR + "x the star radius.");
     }
     notifyObservers("Created", planet);
   }
@@ -61,15 +70,15 @@ public class CelestialBodyManager implements CelestialRules {
   public void onCreation(Moon moon, Planet planet) {
     defaults(moon);
     uniqueName(moon, planet.getChildren());
-    if (moon.getRadius() < 10) {
+    if (moon.getRadius() < MOON_MIN_RADIUS) {
       throw new IllegalArgumentException("Moon radius must be larger than 10km.");
     }
 
-    if (moon.getRadius() > planet.getRadius() / 17) {
+    if (moon.getRadius() > planet.getRadius() / MOON_RADIUS_FACTOR) {
       throw new IllegalArgumentException("Moon radius must be smaller than 17x the planet radius.");
     }
 
-    if (moon.getOrbitRadius() < planet.getRadius() * 5) {
+    if (moon.getOrbitRadius() < planet.getRadius() * MOON_ORBIT_RADIUS_FACTOR) {
       throw new IllegalArgumentException("Moon orbit radius must be larger than 5x the planet radius.");
     }
     notifyObservers("Created", moon);
