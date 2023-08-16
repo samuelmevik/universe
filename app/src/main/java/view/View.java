@@ -9,6 +9,7 @@ import view.events.MainEvent;
 import view.events.MoonEvent;
 import view.events.PlanetEvent;
 import view.events.StarEvent;
+import view.search.SearchType;
 
 /**
  * Interface for the view.
@@ -26,9 +27,15 @@ public interface View extends CelestialObserver {
 
   public Moon getMoon();
 
-  public void showError(String message);
+  public String askForName();
 
-  public void pickSortingStrategy();
+  public double askForRadius();
+
+  public double askForOrbitRadius();
+
+  public void showError(String message);
+  
+  public SearchType showSearchMenu();
 
   public MainEvent showMainMenu();
 
@@ -37,4 +44,6 @@ public interface View extends CelestialObserver {
   public PlanetEvent showPlanetMenu(Planet planet);
 
   public MoonEvent showMoonMenu(Moon moon);
+
+  
 }

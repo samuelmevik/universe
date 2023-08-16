@@ -1,5 +1,6 @@
 package controller;
 
+import controller.search.CelestialBodyContext;
 import model.CelestialBody;
 import model.Moon;
 import model.Orbital;
@@ -7,6 +8,8 @@ import model.Planet;
 import model.Star;
 import model.Universe;
 import view.View;
+import view.search.NameEqualsStrategy;
+import view.search.RadiusGreaterThanStrategy;
 
 /**
  * The controller is the glue between the model and the view.
@@ -14,6 +17,7 @@ import view.View;
 public class Controller {
   private final Universe universe;
   private final View view;
+  private final CelestialBodyContext context = new CelestialBodyContext();
 
   /**
    * Creates a new controller.
@@ -27,12 +31,34 @@ public class Controller {
   }
 
   private <T extends CelestialBody> T pick(T[] celestialBodies) {
-    view.list(celestialBodies);
-    return view.pickCelestialBody(celestialBodies);
+    list(celestialBodies);
+    return view.pickCelestialBody(context.search(celestialBodies));
+  }
+
+  private <T extends CelestialBody> void list(T[] celestialBodies) {
+    view.list(context.search(celestialBodies));
   }
 
   private <T extends CelestialBody> void create(Orbital<T> orbital, T child) {
     orbital.addChild(child, universe.getRules());
+  }
+
+  private void showSearchMenu() {
+    boolean exit = false;
+    while (!exit) {
+      try {
+        switch (view.showSearchMenu()) {
+          case BACK -> exit = true;
+          case NameEqualsStrategy -> context.setStrategy(new NameEqualsStrategy(view.askForName()));
+          case RadiusGreaterThanStrategy -> context.setStrategy(new RadiusGreaterThanStrategy(view.askForRadius()));
+          case None -> context.setStrategy(null);
+          default ->
+            throw new IllegalArgumentException("Unknown search event");
+        }
+      } catch (Exception e) {
+        view.showError(e.getMessage());
+      }
+    }
   }
 
   /**
@@ -45,9 +71,9 @@ public class Controller {
         switch (view.showMainMenu()) {
           case ADD -> create(universe, view.getStar());
           case QUIT -> exit = true;
-          case LIST -> view.list(universe.getChildren());
+          case LIST -> list(universe.getChildren());
           case SELECT -> showStarMenu(pick(universe.getChildren()));
-          case SORT -> view.pickSortingStrategy();
+          case SORT -> showSearchMenu();
           default -> throw new IllegalArgumentException("Unknown star event");
         }
       } catch (Exception e) {
@@ -66,9 +92,9 @@ public class Controller {
         switch (view.showStarMenu(star)) {
           case ADD -> create(star, view.getPlanet());
           case BACK -> exit = true;
-          case LIST -> view.list(star.getChildren());
+          case LIST -> list(star.getChildren());
           case SELECT -> showPlanetMenu(pick(star.getChildren()));
-          case SORT -> view.pickSortingStrategy();
+          case SORT -> showSearchMenu();
           default ->
             throw new IllegalArgumentException("Unknown star event");
         }
@@ -93,13 +119,13 @@ public class Controller {
             exit = true;
             break;
           case LIST:
-            view.list(planet.getChildren());
+            list(planet.getChildren());
             break;
           case SELECT:
             showMoonMenu(pick(planet.getChildren()));
             break;
           case SORT:
-            view.pickSortingStrategy();
+            showSearchMenu();
             break;
           default:
             throw new IllegalArgumentException("Unknown planet event");

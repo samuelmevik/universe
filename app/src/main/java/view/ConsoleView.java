@@ -10,7 +10,7 @@ import view.events.MainEvent;
 import view.events.MoonEvent;
 import view.events.PlanetEvent;
 import view.events.StarEvent;
-import view.sorting.Sort;
+import view.search.SearchType;
 
 /**
  * The console view.
@@ -21,21 +21,20 @@ public class ConsoleView implements View {
 
   private static final String add = "add";
   private static final String back = "b";
-  private static  final String list = "lm";
+  private static final String list = "lm";
   private static final String select = "sel";
   private static final String sort = "s";
   private static final String quit = "q";
 
-  private Sort[] sortingStrategies;
-  private Sort currentSortingStrategy;
+  private static final String radiusSearchStrategy = "r";
+  private static final String nameSearchStrategy = "n";
 
   /**
    * Creates a new view.
    */
-  public ConsoleView(Scanner sc, Sort[] sortingStrategies) {
+  public ConsoleView(Scanner sc) {
     this.sc = sc;
-    this.sortingStrategies = sortingStrategies;
-    this.currentSortingStrategy = sortingStrategies[0];
+
   }
 
   @Override
@@ -44,10 +43,9 @@ public class ConsoleView implements View {
       System.out.println("No celestial objects found");
       return;
     }
-    CelestialBody[] sortedObjects = currentSortingStrategy.sort(celestialObjects);
-    for (int i = 0; i < sortedObjects.length; i++) {
+    for (int i = 0; i < celestialObjects.length; i++) {
       System.out.print((i + 1) + ". ");
-      show(sortedObjects[i]);
+      show(celestialObjects[i]);
     }
   }
 
@@ -64,9 +62,8 @@ public class ConsoleView implements View {
       System.out.println("No celestial bodies found");
       return null;
     }
-    T[] sortedObjects = currentSortingStrategy.sort(celestialBodies);
     System.out.println("Select a celestial body: ");
-    return sortedObjects[Integer.parseInt(sc.nextLine()) - 1];
+    return celestialBodies[Integer.parseInt(sc.nextLine()) - 1];
   }
 
   @Override
@@ -84,17 +81,20 @@ public class ConsoleView implements View {
     return new Moon(askForName(), askForRadius(), askForOrbitRadius());
   }
 
-  private String askForName() {
+  @Override
+  public String askForName() {
     System.out.println("Name: ");
     return sc.nextLine();
   }
 
-  private double askForRadius() {
+  @Override
+  public double askForRadius() {
     System.out.println("Radius: ");
     return Double.parseDouble(sc.nextLine());
   }
 
-  private double askForOrbitRadius() {
+  @Override
+  public double askForOrbitRadius() {
     System.out.println("Orbit radius: ");
     return Double.parseDouble(sc.nextLine());
   }
@@ -102,15 +102,6 @@ public class ConsoleView implements View {
   @Override
   public void showError(String message) {
     System.out.println("Error: " + message);
-  }
-
-  @Override
-  public void pickSortingStrategy() {
-    System.out.println("Choose a sorting strategy:");
-    for (int i = 0; i < sortingStrategies.length; i++) {
-      System.out.println((i + 1) + " " + sortingStrategies[i].getName());
-    }
-    currentSortingStrategy = sortingStrategies[Integer.parseInt(sc.nextLine()) - 1];
   }
 
   @Override
@@ -202,6 +193,27 @@ public class ConsoleView implements View {
   @Override
   public void update(String method, CelestialBody body) {
     System.out.println(method + " " + body.getName());
+  }
+
+  @Override
+  public SearchType showSearchMenu() {
+    System.out.println("******************************************************");
+    System.out.println("Sort Menu");
+    System.out.println("******************************************************");
+    System.out.println(" " + radiusSearchStrategy + " - Search by Radius");
+    System.out.println(" " + nameSearchStrategy + " - Search by name");
+    System.out.println(" " + back + " - Back");
+    System.out.println("Leave empty to disable sorting");
+
+    String choice = sc.nextLine().toLowerCase();
+
+    return switch (choice) {
+      case radiusSearchStrategy -> SearchType.RadiusGreaterThanStrategy;
+      case nameSearchStrategy -> SearchType.NameEqualsStrategy;
+      case back -> SearchType.BACK;
+      case "" -> SearchType.None;
+      default -> throw new IllegalArgumentException("Unexpected value: " + choice);
+    };
   }
 
 }
