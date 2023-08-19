@@ -22,7 +22,7 @@ public class Star extends CelestialBody {
    */
   public static final class Mutable extends Star implements Orbital<Planet> {
 
-    public Mutable(Star star, Universe universe) {
+    public Mutable(Star star) {
       super(star.getName(), star.getRadius());
     }
 
