@@ -28,7 +28,7 @@ public final class Universe implements Orbital<Star> {
   @Override
   public void addChild(Star star, CelestialRules rules) {
     rules.onCreation(star, this);
-    stars.add(new Star.Mutable(star, this));
+    stars.add(new Star.Mutable(star));
   }
 
   @Override
