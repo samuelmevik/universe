@@ -1,16 +1,15 @@
-package view.search;
+package model.search;
 
 import model.CelestialBody;
-import model.search.CelestialBodyStrategy;
 
 /**
  * A strategy that returns true if the name of the body contains the target
  * name.
  *
- * @see CelestialBodyStrategy
+ * @see SearchStrategy
  * @see CelestialBody
  */
-public class NameEqualsStrategy implements CelestialBodyStrategy {
+public class NameEqualsStrategy implements SearchStrategy {
   private String targetName = "";
 
   /**

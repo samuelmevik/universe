@@ -4,20 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import model.CelestialBody;
-import model.search.CelestialBodyStrategy;
+import model.search.SearchStrategy;
 
 /**
  * This class is used to search for celestial bodies based on a strategy.
  */
 public class CelestialBodyContext {
-  private CelestialBodyStrategy strategy = null;
+  private SearchStrategy strategy = null;
 
-  public void setStrategy(CelestialBodyStrategy strategy) {
+  public void setStrategy(SearchStrategy strategy) {
     this.strategy = strategy;
-  }
-
-  private boolean includeCelestialBody(CelestialBody body) {
-    return strategy.shouldInclude(body);
   }
 
   /**
@@ -33,7 +29,7 @@ public class CelestialBodyContext {
     }
     List<T> list = new ArrayList<T>();
     for (T body : bodies) {
-      if (includeCelestialBody(body)) {
+      if (strategy.shouldInclude(body)) {
         list.add(body);
       }
     }

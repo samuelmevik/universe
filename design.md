@@ -8,7 +8,9 @@ The application uses the model-view-controller (MVC) architectural pattern. The 
 
 ## Detailed Design
 ### Class Diagram
-Please provide at least one class diagram according to the assignment requirments.
+![application diagram](img/crude_class_diagram.png)
+
+I decided to not include the observer and CelestialRules.
 
 ### Sequence Diagram
 Please provide at least one sequence diagram according to the assignment requirments.

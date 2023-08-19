@@ -1,12 +1,11 @@
-package view.search;
+package model.search;
 
 import model.CelestialBody;
-import model.search.CelestialBodyStrategy;
 
 /**
  * A strategy that determines whether a celestial body's radius is greater than a given value.
  */
-public class RadiusGreaterThanStrategy implements CelestialBodyStrategy {
+public class RadiusGreaterThanStrategy implements SearchStrategy {
   private double minRadius;
 
   /**

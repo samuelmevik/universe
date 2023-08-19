@@ -8,8 +8,8 @@ import model.observer.CelestialObserver;
 import view.events.MainEvent;
 import view.events.MoonEvent;
 import view.events.PlanetEvent;
+import view.events.SearchEvent;
 import view.events.StarEvent;
-import view.search.SearchType;
 
 /**
  * Interface for the view.
@@ -35,7 +35,7 @@ public interface View extends CelestialObserver {
 
   public void showError(String message);
   
-  public SearchType showSearchMenu();
+  public SearchEvent showSearchMenu();
 
   public MainEvent showMainMenu();
 

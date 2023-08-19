@@ -6,7 +6,7 @@ import model.CelestialBody;
  * A strategy for determining whether a celestial body should be included in a
  * search.
  */
-public interface CelestialBodyStrategy {
+public interface SearchStrategy {
   /**
    * Determines whether a celestial body should be included in a search.
    *

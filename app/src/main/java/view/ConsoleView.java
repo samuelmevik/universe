@@ -9,8 +9,8 @@ import model.Star;
 import view.events.MainEvent;
 import view.events.MoonEvent;
 import view.events.PlanetEvent;
+import view.events.SearchEvent;
 import view.events.StarEvent;
-import view.search.SearchType;
 
 /**
  * The console view.
@@ -196,7 +196,7 @@ public class ConsoleView implements View {
   }
 
   @Override
-  public SearchType showSearchMenu() {
+  public SearchEvent showSearchMenu() {
     System.out.println("******************************************************");
     System.out.println("Sort Menu");
     System.out.println("******************************************************");
@@ -208,10 +208,10 @@ public class ConsoleView implements View {
     String choice = sc.nextLine().toLowerCase();
 
     return switch (choice) {
-      case radiusSearchStrategy -> SearchType.RadiusGreaterThanStrategy;
-      case nameSearchStrategy -> SearchType.NameEqualsStrategy;
-      case back -> SearchType.BACK;
-      case "" -> SearchType.None;
+      case radiusSearchStrategy -> SearchEvent.RADIUS_GREATER;
+      case nameSearchStrategy -> SearchEvent.NAME_CONTAINS;
+      case back -> SearchEvent.BACK;
+      case "" -> SearchEvent.NONE;
       default -> throw new IllegalArgumentException("Unexpected value: " + choice);
     };
   }

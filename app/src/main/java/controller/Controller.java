@@ -7,9 +7,9 @@ import model.Orbital;
 import model.Planet;
 import model.Star;
 import model.Universe;
+import model.search.NameEqualsStrategy;
+import model.search.RadiusGreaterThanStrategy;
 import view.View;
-import view.search.NameEqualsStrategy;
-import view.search.RadiusGreaterThanStrategy;
 
 /**
  * The controller is the glue between the model and the view.
@@ -49,9 +49,9 @@ public class Controller {
       try {
         switch (view.showSearchMenu()) {
           case BACK -> exit = true;
-          case NameEqualsStrategy -> context.setStrategy(new NameEqualsStrategy(view.askForName()));
-          case RadiusGreaterThanStrategy -> context.setStrategy(new RadiusGreaterThanStrategy(view.askForRadius()));
-          case None -> context.setStrategy(null);
+          case NAME_CONTAINS -> context.setStrategy(new NameEqualsStrategy(view.askForName()));
+          case RADIUS_GREATER -> context.setStrategy(new RadiusGreaterThanStrategy(view.askForRadius()));
+          case NONE -> context.setStrategy(null);
           default ->
             throw new IllegalArgumentException("Unknown search event");
         }
